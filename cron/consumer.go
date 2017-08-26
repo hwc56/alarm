@@ -25,6 +25,24 @@ func consume(event *model.Event, isHigh bool) {
 		return
 	}
 
+	isOk := false
+	switch event.Operator() {
+	case ">=":
+		isOk = (event.LeftValue >= event.RightValue())
+	case "<=":
+		isOk = (event.LeftValue <= event.RightValue())
+	case ">":
+		isOk = (event.LeftValue > event.RightValue())
+	case "<":
+		isOk = (event.LeftValue < event.RightValue())
+	case "!=":
+		isOk = (event.LeftValue != event.RightValue())
+	}
+
+	if !isOk{
+		return
+	}
+	
 	if isHigh {
 		consumeHighEvents(event, action)
 	} else {
